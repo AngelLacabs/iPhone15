@@ -1,0 +1,169 @@
+:root {
+  --transition-fast: 600ms;
+  --transition-standard: 700ms;
+  --transition-reveal: 800ms;
+  --easing-smooth: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "SF Pro Display", "SF Pro Text", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  color: #0a0a0a;
+  background: #f5f6f7;
+}
+
+.sticky-header {
+  top: 1rem;
+}
+
+.glass {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px) saturate(140%);
+  -webkit-backdrop-filter: blur(5px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+header {
+  display: block;
+}
+
+.header__logo {
+  display: inline-flex;
+  align-items: center;
+}
+
+main section {
+  padding: 72px 20px;
+  min-height: 60vh;
+}
+
+.slider {
+  width: 100%;
+  max-width: 1100px;
+  margin: 24px auto 0;
+  overflow: hidden;
+}
+
+.slider__track {
+  display: flex;
+  align-items: center;
+}
+
+.slide {
+  flex: 0 0 100%;
+  display: grid;
+  place-items: center;
+  padding: 20px 0;
+}
+
+.slider .phone {
+  width: min(56vw, 420px);
+  height: auto;
+  object-fit: contain;
+}
+
+.slider__dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 0 0;
+}
+
+.slider__dots button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 3px solid #333;
+  background: #fff;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.slider__dots button[aria-selected="true"] {
+  opacity: 1;
+  background: #333;
+}
+
+.coverflow {
+  position: relative;
+  perspective: 1200px;
+}
+
+.coverflow .slider__track {
+  position: relative;
+  height: clamp(260px, 48vw, 420px);
+}
+
+.coverflow .slide {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform var(--transition-standard) var(--easing-smooth), opacity var(--transition-standard) ease, z-index 0s linear 0s;
+}
+
+.coverflow .slide .phone {
+  width: min(34vw, 280px);
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.18));
+  transition: transform var(--transition-fast) var(--easing-smooth);
+}
+
+.coverflow .pos0 {
+  transform: translate(-50%, -50%) translateX(0) scale(1) rotateY(0);
+  z-index: 5;
+}
+
+.coverflow .pos1 {
+  transform: translate(-50%, -50%) translateX(22vw) scale(0.9) rotateY(-14deg);
+  z-index: 4;
+  opacity: 0.95;
+}
+
+.coverflow .pos2 {
+  transform: translate(-50%, -50%) translateX(38vw) scale(0.75) rotateY(-22deg);
+  z-index: 3;
+  opacity: 0.7;
+}
+
+.coverflow .pos-1 {
+  transform: translate(-50%, -50%) translateX(-22vw) scale(0.9) rotateY(14deg);
+  z-index: 4;
+  opacity: 0.95;
+}
+
+.coverflow .pos-2 {
+  transform: translate(-50%, -50%) translateX(-38vw) scale(0.75) rotateY(22deg);
+  z-index: 3;
+  opacity: 0.7;
+}
+
+.coverflow .pos0 .phone {
+  transform: scale(1.06);
+}
+
+.reveal-card {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: transform var(--transition-reveal) ease, opacity var(--transition-reveal) ease;
+}
+
+.reveal-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.parallax-layer {
+  transform: translateY(0);
+  transition: transform var(--transition-standard) ease;
+  will-change: transform;
+}
+
+#buy {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}
