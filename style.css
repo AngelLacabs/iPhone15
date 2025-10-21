@@ -254,6 +254,54 @@ main section {
 }
 
 @media (max-width: 600px) {
+  .slider,
+  .coverflow,
+  .coverflow .slider__track {
+    min-height: 350px;
+    height: clamp(330px, 60vw, 380px);
+    overflow: visible !important;
+  }
+  .coverflow {
+    overflow: visible !important;
+  }
+  .coverflow .slider__track {
+    overflow: visible !important;
+  }
+  .coverflow .slide {
+    overflow: visible !important;
+  }
+  /* Show 5 slides (main and +/-2) but make side slides a bit smaller and closer for mobile */
+  .coverflow .pos1 {
+    transform: translate(-50%, -50%) translateX(28vw) scale(0.85) rotateY(-10deg);
+    z-index: 4;
+    opacity: 0.92;
+  }
+  .coverflow .pos2 {
+    transform: translate(-50%, -50%) translateX(46vw) scale(0.65) rotateY(-14deg);
+    z-index: 3;
+    opacity: 0.6;
+  }
+  .coverflow .pos-1 {
+    transform: translate(-50%, -50%) translateX(-28vw) scale(0.85) rotateY(10deg);
+    z-index: 4;
+    opacity: 0.92;
+  }
+  .coverflow .pos-2 {
+    transform: translate(-50%, -50%) translateX(-46vw) scale(0.65) rotateY(14deg);
+    z-index: 3;
+    opacity: 0.6;
+  }
+  /* Only hide further slides */
+  .coverflow .slide:not(.pos0):not(.pos1):not(.pos2):not(.pos-1):not(.pos-2) {
+    opacity: 0 !important;
+    pointer-events: none;
+  }
+  .slider.loaded {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
   .sticky-header {
     top: 0.5rem;
   }
