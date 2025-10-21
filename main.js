@@ -195,6 +195,26 @@ document.addEventListener('DOMContentLoaded', () => {
       stepThrottle = true;
       setTimeout(() => (stepThrottle = false), 700);
     }, { passive: true });
+
+    // --- Mobile tap/touch support for feature step reveal ---
+    stepSection.addEventListener('touchstart', () => {
+      if (stepThrottle) return;
+      if (current + 1 < cards.length) {
+        current += 1;
+        cards[current]?.classList.add('is-visible');
+      }
+      stepThrottle = true;
+      setTimeout(() => (stepThrottle = false), 700);
+    }, { passive: true });
+    stepSection.addEventListener('click', () => {
+      if (stepThrottle) return;
+      if (current + 1 < cards.length) {
+        current += 1;
+        cards[current]?.classList.add('is-visible');
+      }
+      stepThrottle = true;
+      setTimeout(() => (stepThrottle = false), 700);
+    });
   }
 
   // Auto-reveal + parallax
