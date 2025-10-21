@@ -1,90 +1,67 @@
+
 :root {
   --transition-fast: 600ms;
   --transition-standard: 700ms;
   --transition-reveal: 800ms;
   --easing-smooth: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-
 * {
   box-sizing: border-box;
 }
-
 html, body {
   margin: 0;
   padding: 0;
   font-family: "SF Pro Display", "SF Pro Text", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
   color: #0a0a0a;
   background: #f5f6f7;
-  overflow-x: hidden;
 }
-
 .sticky-header {
   top: 1rem;
 }
-
 .glass {
   background-color: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(5px) saturate(140%);
   -webkit-backdrop-filter: blur(5px) saturate(140%);
   border: 1px solid rgba(255, 255, 255, 0.35);
 }
-
 header {
   display: block;
 }
-
 .header__logo {
   display: inline-flex;
   align-items: center;
 }
-
 main section {
   padding: 72px 20px;
   min-height: 60vh;
 }
-
 .slider {
   width: 100%;
   max-width: 1100px;
   margin: 24px auto 0;
   overflow: hidden;
-  opacity: 0;
-  transition: opacity 400ms ease;
-  touch-action: pan-y pinch-zoom;
-  user-select: none;
 }
-
-.slider.loaded {
-  opacity: 1;
-}
-
 .slider__track {
   display: flex;
   align-items: center;
 }
-
 .slide {
   flex: 0 0 100%;
   display: grid;
   place-items: center;
   padding: 20px 0;
 }
-
 .slider .phone {
   width: min(56vw, 420px);
   height: auto;
   object-fit: contain;
-  pointer-events: none;
 }
-
 .slider__dots {
   display: flex;
   justify-content: center;
   gap: 10px;
   padding: 14px 0 0;
-  flex-wrap: wrap;
 }
-
 .slider__dots button {
   width: 30px;
   height: 30px;
@@ -93,26 +70,19 @@ main section {
   background: #fff;
   opacity: 0.7;
   cursor: pointer;
-  transition: all 0.3s ease;
 }
-
 .slider__dots button[aria-selected="true"] {
   opacity: 1;
   background: #333;
-  transform: scale(1.1);
 }
-
 .coverflow {
   position: relative;
   perspective: 1200px;
 }
-
 .coverflow .slider__track {
   position: relative;
   height: clamp(260px, 48vw, 420px);
-  min-height: 300px;
 }
-
 .coverflow .slide {
   position: absolute;
   left: 50%;
@@ -120,164 +90,53 @@ main section {
   transform: translate(-50%, -50%);
   transition: transform var(--transition-standard) var(--easing-smooth), opacity var(--transition-standard) ease, z-index 0s linear 0s;
 }
-
-.coverflow .slide:not(.pos0):not(.pos1):not(.pos2):not(.pos-1):not(.pos-2) {
-  opacity: 0;
-  pointer-events: none;
-}
-
 .coverflow .slide .phone {
   width: min(34vw, 280px);
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.18));
   transition: transform var(--transition-fast) var(--easing-smooth);
 }
-
 .coverflow .pos0 {
   transform: translate(-50%, -50%) translateX(0) scale(1) rotateY(0);
   z-index: 5;
 }
-
 .coverflow .pos1 {
   transform: translate(-50%, -50%) translateX(22vw) scale(0.9) rotateY(-14deg);
   z-index: 4;
   opacity: 0.95;
 }
-
 .coverflow .pos2 {
   transform: translate(-50%, -50%) translateX(38vw) scale(0.75) rotateY(-22deg);
   z-index: 3;
   opacity: 0.7;
 }
-
 .coverflow .pos-1 {
   transform: translate(-50%, -50%) translateX(-22vw) scale(0.9) rotateY(14deg);
   z-index: 4;
   opacity: 0.95;
 }
-
 .coverflow .pos-2 {
   transform: translate(-50%, -50%) translateX(-38vw) scale(0.75) rotateY(22deg);
   z-index: 3;
   opacity: 0.7;
 }
-
 .coverflow .pos0 .phone {
   transform: scale(1.06);
 }
-
 .reveal-card {
   opacity: 0;
   transform: translateY(24px);
   transition: transform var(--transition-reveal) ease, opacity var(--transition-reveal) ease;
 }
-
 .reveal-card.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
-
 .parallax-layer {
   transform: translateY(0);
   transition: transform var(--transition-standard) ease;
   will-change: transform;
 }
-
 #buy {
   background-color: #f8f9fa;
   border-top: 1px solid #dee2e6;
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  main section {
-    padding: 40px 15px;
-    min-height: auto;
-  }
-  
-  h1 {
-    font-size: 2rem !important;
-  }
-  
-  h2 {
-    font-size: 1.5rem !important;
-  }
-
-  .slider .phone {
-    width: min(70vw, 280px);
-  }
-
-  .slider__dots button {
-    width: 40px;
-    height: 40px;
-  }
-
-  .coverflow .slider__track {
-    height: clamp(300px, 60vw, 400px);
-  }
-
-  .coverflow .slide .phone {
-    width: min(50vw, 220px);
-  }
-
-  .coverflow .pos1 {
-    transform: translate(-50%, -50%) translateX(30vw) scale(0.85) rotateY(-12deg);
-  }
-  
-  .coverflow .pos2 {
-    transform: translate(-50%, -50%) translateX(50vw) scale(0.7) rotateY(-18deg);
-  }
-  
-  .coverflow .pos-1 {
-    transform: translate(-50%, -50%) translateX(-30vw) scale(0.85) rotateY(12deg);
-  }
-  
-  .coverflow .pos-2 {
-    transform: translate(-50%, -50%) translateX(-50vw) scale(0.7) rotateY(18deg);
-  }
-
-  .coverflow .pos0 .phone {
-    transform: scale(1.02);
-  }
-
-  .parallax-layer {
-    transform: translateY(0) !important;
-  }
-
-  #buy {
-    padding: 2rem 0 !important;
-  }
-  
-  #buy .btn {
-    width: 90%;
-    max-width: 300px;
-  }
-}
-
-@media (max-width: 600px) {
-  .sticky-header {
-    top: 0.5rem;
-  }
-
-  .glass {
-    padding: 0.5rem 1rem !important;
-    border-radius: 1.25rem;
-  }
-
-  .header__logo img {
-    width: 24px !important;
-    height: 24px !important;
-  }
-
-  nav[aria-label='Primary'] ul.nav {
-    flex-direction: row !important;
-    gap: 0.6rem;
-    font-size: 1.02rem;
-    flex-wrap: wrap;
-  }
-
-  nav[aria-label='Primary'] ul.nav .nav-link {
-    padding: 0.1rem 0.2rem;
-    font-size: 1rem;
-    white-space: nowrap;
-  }
 }
