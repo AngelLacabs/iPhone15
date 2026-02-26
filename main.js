@@ -1,4 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
+      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      menuToggle.setAttribute('aria-expanded', !isExpanded);
+      mobileMenu.classList.toggle('active');
+    });
+    
+    // Close menu when a link is clicked
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        menuToggle.setAttribute('aria-expanded', 'false');
+        mobileMenu.classList.remove('active');
+      });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('header')) {
+        menuToggle.setAttribute('aria-expanded', 'false');
+        mobileMenu.classList.remove('active');
+      }
+    });
+  }
+
   const slider = document.querySelector('.slider');
   if (!slider) return;
 
@@ -6,11 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const dotsContainer = slider.querySelector('.slider__dots');
   let index = 0;
   let isThrottled = false;
-
-  // Touch support variables
-  let touchStartX = 0;
-  let touchEndX = 0;
-  let isDragging = false;
 
   // Create dots, colorized based on slide data-color
   slides.forEach((slide, i) => {
@@ -51,120 +74,19 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => (isThrottled = false), 700);
   }
 
-  // Desktop: Mouse wheel
+  // Slider controls
   slider.addEventListener('wheel', (e) => {
     if (Math.abs(e.deltaY) < 10 && Math.abs(e.deltaX) < 10) return;
     e.preventDefault();
-    
-    const direction = Math.abs(e.deltaX) > Math.abs(e.deltaY) 
-      ? (e.deltaX > 0 ? 1 : -1)
-      : (e.deltaY > 0 ? 1 : -1);
-    
-    throttleAdvance(direction);
+    throttleAdvance(e.deltaY > 0 || e.deltaX > 0 ? 1 : -1);
   }, { passive: false });
 
-  // Keyboard navigation
   window.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') throttleAdvance(1);
     if (e.key === 'ArrowLeft') throttleAdvance(-1);
   });
 
-  // Mobile touch support (swipe left/right)
-  slider.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-    isDragging = true;
-  }, { passive: true });
-
-  slider.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-    touchEndX = e.changedTouches[0].screenX;
-  }, { passive: true });
-
-  slider.addEventListener('touchend', () => {
-    if (!isDragging) return;
-    isDragging = false;
-    
-    const swipeDistance = touchStartX - touchEndX;
-    const minSwipeDistance = 50;
-    
-    if (Math.abs(swipeDistance) > minSwipeDistance) {
-      if (swipeDistance > 0) {
-        throttleAdvance(1);
-      } else {
-        throttleAdvance(-1);
-      }
-    }
-  }, { passive: true });
-
-  // Desktop mouse drag support
-  let mouseStartX = 0;
-  let mouseEndX = 0;
-  let isMouseDragging = false;
-
-  slider.addEventListener('mousedown', (e) => {
-    mouseStartX = e.clientX;
-    isMouseDragging = true;
-    slider.style.cursor = 'grabbing';
-  });
-
-  slider.addEventListener('mousemove', (e) => {
-    if (!isMouseDragging) return;
-    mouseEndX = e.clientX;
-  });
-
-  slider.addEventListener('mouseup', () => {
-    if (!isMouseDragging) return;
-    isMouseDragging = false;
-    slider.style.cursor = 'grab';
-    
-    const dragDistance = mouseStartX - mouseEndX;
-    const minDragDistance = 50;
-    
-    if (Math.abs(dragDistance) > minDragDistance) {
-      if (dragDistance > 0) {
-        throttleAdvance(1);
-      } else {
-        throttleAdvance(-1);
-      }
-    }
-  });
-
-  slider.addEventListener('mouseleave', () => {
-    if (isMouseDragging) {
-      isMouseDragging = false;
-      slider.style.cursor = 'grab';
-    }
-  });
-
-  slider.style.cursor = 'grab';
-
   update();
-
-  // Wait for images to load
-  const images = Array.from(slider.querySelectorAll('img'));
-  let loadedCount = 0;
-
-  function checkAllImagesLoaded() {
-    loadedCount++;
-    if (loadedCount === images.length) {
-      setTimeout(() => {
-        slider.classList.add('loaded');
-      }, 100);
-    }
-  }
-
-  images.forEach(img => {
-    if (img.complete) {
-      checkAllImagesLoaded();
-    } else {
-      img.addEventListener('load', checkAllImagesLoaded);
-      img.addEventListener('error', checkAllImagesLoaded);
-    }
-  });
-
-  setTimeout(() => {
-    slider.classList.add('loaded');
-  }, 2000);
 
   // Step-by-step reveal
   const stepSection = document.querySelector('.step-reveal');
@@ -195,26 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
       stepThrottle = true;
       setTimeout(() => (stepThrottle = false), 700);
     }, { passive: true });
-
-    // --- Mobile tap/touch support for feature step reveal ---
-    stepSection.addEventListener('touchstart', () => {
-      if (stepThrottle) return;
-      if (current + 1 < cards.length) {
-        current += 1;
-        cards[current]?.classList.add('is-visible');
-      }
-      stepThrottle = true;
-      setTimeout(() => (stepThrottle = false), 700);
-    }, { passive: true });
-    stepSection.addEventListener('click', () => {
-      if (stepThrottle) return;
-      if (current + 1 < cards.length) {
-        current += 1;
-        cards[current]?.classList.add('is-visible');
-      }
-      stepThrottle = true;
-      setTimeout(() => (stepThrottle = false), 700);
-    });
   }
 
   // Auto-reveal + parallax
